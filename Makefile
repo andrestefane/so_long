@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: astefane <astefane@student.42.fr>          +#+  +:+       +#+         #
+#    By: astefane <astefane@student.42madrid>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/22 15:47:58 by astefane          #+#    #+#              #
-#    Updated: 2025/03/28 08:18:49 by astefane         ###   ########.fr        #
+#    Updated: 2025/04/01 20:07:35 by astefane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror -Wno-error=unused-but-set-variable
 
 LIBFT = libft
 LIBFT_DIR = ft_libft/

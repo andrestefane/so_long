@@ -3,182 +3,147 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: astefane <astefane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: astefane <astefane@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 18:57:44 by astefane          #+#    #+#             */
-/*   Updated: 2025/03/28 08:53:32 by astefane         ###   ########.fr       */
+/*   Updated: 2025/04/01 22:06:11 by astefane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
+int	check_exit(t_game *game, char c)
+{
+	if (c == 'E')
+	{
+		if (game->coins == 0)
+		{
+			ft_putstr("You win\n");
+			mlx_terminate(game->mlx);
+			exit(0);
+		}
+		else
+			return (1);
+	}
+	return (0);
+}
+
 void print_map(t_game *game)
 {
-    int y = 0;
-    int x = 0;
+    int i = 0;
 
-    while (y < game->heigh)
+    while (game->big_line[i])
     {
-        x = 0;
-        while (x < game->width)
-        {
-            printf("%c", game->map2d[y][x]);
-            x++;
-        }
-        printf("\n");
-        y++;
+        printf("%c", game->big_line[i]);
+        if ((i + 1) % game->width == 0)
+            printf("\n");
+
+        i++;
     }
 }
 
 void	ft_left(t_game *game)
 {
-	int	x;
-	int	y;
+	int i;
 
-	y = 0;
-	while (y < game->heigh && !x) {
-		x = 0;
-		while (x < game->width) {
-			if (game->map2d[y][x] == 'P') {
-				break;
-			}
-			x++;
-		}
-		if (x < game->width) {
-			break;
-		}
-		y++;
-	}
-
-	if (x > 0 && game->map2d[y][x - 1] != '1' && game->map2d[y][x - 1] != 'E') {
-		game->map2d[y][x] = '0';
-		game->map2d[y][x - 1] = 'P';
-
-		game->moves++;
-
-		if (game->map2d[y][x - 1] == 'C') {
+	i = 0;
+	while (game->big_line[i] != 'P')
+		i++;
+	if (game->big_line[i - 1] != '1'
+		&& !check_exit(game, game->big_line[i - 1]))
+	{
+		if (game->big_line[i - 1] == 'C')
 			game->coins--;
-		}
-
-		if (game->map2d[y][x - 1] == 'E' && game->coins == 0) {
-			ft_error("You win!", 0);
-		}
+		game->big_line[i] = '0';
+		game->big_line[i - 1] = 'P';
+		if (game->big_line[i - game->width] == 'E')
+			game->exit = 1;
+		game->moves++;
+		put_image(game, i);
+		put_image(game, i - 1);
+		ft_putstr("moves: ");
+		ft_putnbr(game->moves);
+		ft_putchar('\n');
 	}
-
-	print_map(game);
+	/* print_map(game); */
 }
 
 void	ft_right(t_game *game)
 {
-	int	x;
-	int	y;
+	int i;
 
-	y = 0;
-	while (y < game->heigh && !x) {
-		x = 0;
-		while (x < game->width) {
-			if (game->map2d[y][x] == 'P') {
-				break;
-			}
-			x++;
-		}
-		if (x < game->width) {
-			break;
-		}
-		y++;
-	}
-
-	if (x < game->width - 1 && game->map2d[y][x + 1] != '1' && game->map2d[y][x + 1] != 'E') {
-		game->map2d[y][x] = '0';
-		game->map2d[y][x + 1] = 'P';
-
-		game->moves++;
-
-		if (game->map2d[y][x + 1] == 'C') {
+	i = 0;
+	while (game->big_line[i] != 'P')
+		i++;
+	if (game->big_line[i + 1] != '1'
+		&& !check_exit(game, game->big_line[i + 1]))
+	{
+		if (game->big_line[i + 1] == 'C')
 			game->coins--;
-		}
-
-		if (game->map2d[y][x + 1] == 'E' && game->coins == 0) {
-			ft_error("You win!", 0);
-		}
+		if (game->big_line[i + 1] == 'E' && game->coins > 0)
+			return;
+		game->big_line[i] = '0';
+		game->big_line[i + 1] = 'P';
+		game->moves++;
+		put_image(game, i);
+		put_image(game, i + 1);
+		ft_putstr("moves: ");
+		ft_putnbr(game->moves);
+		ft_putchar('\n');
 	}
-
-	print_map(game);
+	/* print_map(game); */
 }
+
 
 void	ft_down(t_game *game)
 {
-	int	x;
-	int	y;
+	int	i;
 
-	y = 0;
-	while (y < game->heigh && !x) {
-		x = 0;
-		while (x < game->width) {
-			if (game->map2d[y][x] == 'P') {
-				break;
-			}
-			x++;
-		}
-		if (x < game->width) {
-			break;
-		}
-		y++;
-	}
-
-	if (y < game->heigh - 1 && game->map2d[y + 1][x] != '1' && game->map2d[y + 1][x] != 'E') {
-		game->map2d[y][x] = '0';
-		game->map2d[y + 1][x] = 'P';
-
-		game->moves++;
-
-		if (game->map2d[y + 1][x] == 'C') {
+	i = 0;
+	while (game->big_line[i] != 'P')
+		i++;
+	if (game->big_line[i + game->width] != '1'
+		&& !check_exit(game, game->big_line[i + game->width]))
+	{
+		if (game->big_line[i + game->width] == 'C')
 			game->coins--;
-		}
-
-		if (game->map2d[y + 1][x] == 'E' && game->coins == 0) {
-			ft_error("You win!", 0);
-		}
+		game->big_line[i] = '0';
+		game->big_line[i + game->width] = 'P';
+		if (game->big_line[i - game->width] == 'E')
+			game->exit = 1;
+		game->moves++;
+		put_image(game, i);
+		put_image(game, i + game->width);
+		ft_putstr("moves: ");
+		ft_putchar('\n');
+		ft_putnbr(game->moves);
 	}
-
-	print_map(game);
+	/* print_map(game); */
 }
 
 void	ft_up(t_game *game)
 {
-	int	x;
-	int	y;
+	int i;
 
-	y = 0;
-	while (y < game->heigh && !x)
+	i = 0;
+	while (game->big_line[i] != 'P')
+		i++;
+	if (game->big_line[i - game->width] != '1'
+		&& !check_exit(game, game->big_line[i - game->width]))
 	{
-		x = 0;
-		while (x < game->width)
-		{
-			if (game->map2d[y][x] == 'P')
-				break ;
-			x++;
-		}
-		if (x < game->width)
-			break ;
-		y++;
-	}
-	if (y > 0 && game->map2d[y - 1][x] != '1'
-		&& game->map2d[y - 1][x] != 'E')
-	{
-		game->map2d[y][x] = '0';
-		game->map2d[y - 1][x] = 'P';
-		game->moves++;
-		if (game->map2d[y - 1][x] == 'C')
+		if (game->big_line[i - game->width] == 'C')
 			game->coins--;
-		if (game->map2d[y - 1][x] == 'E' && game->coins == 0)
-			ft_error("You win!", 0);
-	}
-
-	print_map(game);
+		game->big_line[i] = '0';
+		game->big_line[i - game->width] = 'P';
+		game->moves++;
+		put_image(game, i);
+		put_image(game, i - game->width);
+		ft_putstr("moves: ");
+		ft_putnbr(game->moves);
+		ft_putchar('\n');
+	}	
+	/* print_map(game); */
 }
-
-
 
 void	key_press(mlx_key_data_t keydata, void *param)
 {
