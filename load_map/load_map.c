@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: astefane <astefane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: astefane <astefane@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 05:46:53 by astefane          #+#    #+#             */
-/*   Updated: 2025/03/28 06:12:29 by astefane         ###   ########.fr       */
+/*   Updated: 2025/04/01 21:34:31 by astefane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	put_image(t_game *game, int i)
 	pos_y = (i / game->width) * 64;
 	pos_x = (i % game->width) * 64;
 	mlx_image_to_window(game->mlx, game->img_background, pos_x, pos_y);
-	printf("Placing image at (%d, %d): %c\n", pos_x, pos_y, game->big_line[i]);
 	if (game->big_line[i] == 'P')
 		mlx_image_to_window(game->mlx, game->img_player, pos_x, pos_y);
 	if (game->big_line[i] == 'C')

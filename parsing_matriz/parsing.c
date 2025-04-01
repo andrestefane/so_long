@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: astefane <astefane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: astefane <astefane@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 08:13:52 by astefane          #+#    #+#             */
-/*   Updated: 2025/03/28 08:14:16 by astefane         ###   ########.fr       */
+/*   Updated: 2025/04/01 20:09:14 by astefane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 void	check_dup_map(t_game *game)
 {
 	int		i;
-	int		len;
 	char	**dup_big_line;
 
-	len = ft_strlen(game->big_line);
 	i = 0;
 	dup_big_line = (char **)malloc(sizeof(char *) * (game->heigh + 1));
 	if (!dup_big_line)
@@ -42,11 +40,6 @@ void	check_dup_map(t_game *game)
 
 void	allocate_map2d(t_game *game, char **dup_big_line)
 {
-	int	x;
-	int	y;
-
-	x = 0;
-	y = 0;
 	game->map2d = (char **)malloc(sizeof(char *) * game->heigh);
 	if (!game->map2d)
 		ft_error("Error allocating 2D map\n", 1);
