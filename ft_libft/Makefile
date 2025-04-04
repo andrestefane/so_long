@@ -6,7 +6,7 @@
 #    By: astefane <astefane@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/21 17:31:38 by astefane          #+#    #+#              #
-#    Updated: 2025/03/28 06:58:48 by astefane         ###   ########.fr        #
+#    Updated: 2025/04/02 16:32:44 by astefane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,7 @@ ft_strndup.c
 
 OBJS			= $(SRCS:.c=.o)
 
-CC				= gcc
+CC				= cc
 RM				= rm -f
 CFLAGS			= -Wall -Wextra -Werror
 

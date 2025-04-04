@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: astefane <astefane@student.42madrid>       +#+  +:+       +#+        */
+/*   By: astefane <astefane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 05:46:53 by astefane          #+#    #+#             */
-/*   Updated: 2025/04/01 21:34:31 by astefane         ###   ########.fr       */
+/*   Updated: 2025/04/02 12:20:36 by astefane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,19 @@ void	load_img(t_game *game)
 
 	texture = mlx_load_png("./img/grass.png");
 	game->img_background = mlx_texture_to_image(game->mlx, texture);
+	mlx_delete_texture(texture);
 	texture = mlx_load_png("./img/tree.png");
 	game->img_wall = mlx_texture_to_image(game->mlx, texture);
+	mlx_delete_texture(texture);
 	texture = mlx_load_png("./img/diamante1.png");
 	game->img_coin = mlx_texture_to_image(game->mlx, texture);
+	mlx_delete_texture(texture);
 	texture = mlx_load_png("./img/cofre.png");
 	game->img_exit = mlx_texture_to_image(game->mlx, texture);
+	mlx_delete_texture(texture);
 	texture = mlx_load_png("./img/player.png");
 	game->img_player = mlx_texture_to_image(game->mlx, texture);
+	mlx_delete_texture(texture);
 }
 
 void	put_image(t_game *game, int i)
@@ -60,10 +65,9 @@ void	place(t_game *game)
 		if (game->big_line[i] == '\n')
 		{
 			i++;
-			/* continue ; */
+			continue ;
 		}
 		put_image(game, i);
 		i++;
 	}
 }
-

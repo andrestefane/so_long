@@ -6,7 +6,7 @@
 /*   By: astefane <astefane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:02:39 by astefane          #+#    #+#             */
-/*   Updated: 2025/03/28 08:50:45 by astefane         ###   ########.fr       */
+/*   Updated: 2025/04/02 18:52:56 by astefane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef struct game
 	int		y;
 	int		heigh;
 	int		width;
-	char	**map2d;
 	char	*big_line;
 	int		wall;
 	int		exit;
@@ -52,6 +51,7 @@ typedef struct game
 	int		coins;
 	int		count_line;
 	int		key;
+	int		copy_coins;
 
 }	t_game;
 
@@ -72,23 +72,27 @@ void	load_img(t_game *game);
 
 //Parseo dup_map
 
-void	check_dup_map(t_game *game);
-void	allocate_map2d(t_game *game, char **dup_big_line);
-void	ft_flood_flip(t_game *game, int y, int x, char **map);
-int		check_matriz(t_game *game);
-void	copy_to_map2d(t_game *game, char **dup_big_line);
+void	check_map(t_game *game);
+void	ft_flood_flip(t_game *game, int x, char *map);
+int		check_end(t_game *game);
+int		ft_find_player(char *big_line);
+int		check_exit_reachable(char *map);
+int		check_player(t_game *game);
+int		check_dup_line(char *dup_big_line);
 
 //Aux
 
-void	free_dup_big_line(char **dup_big_line);
-void	print_map(t_game *game);
+void	free_big_line(char **big_line);
+void	free_game(t_game *game);
 void	parsing(t_game *game, char *map);
+
+//moves
 
 void	key_press(mlx_key_data_t keydata, void *param);
 void	ft_up(t_game *game);
 void	ft_left(t_game *game);
 void	ft_down(t_game *game);
 void	ft_right(t_game *game);
-
+int		check_exit(t_game *game, char c);
 
 #endif

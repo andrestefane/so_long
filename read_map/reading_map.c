@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reading_map.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: astefane <astefane@student.42madrid>       +#+  +:+       +#+        */
+/*   By: astefane <astefane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:23:22 by astefane          #+#    #+#             */
-/*   Updated: 2025/04/01 20:29:51 by astefane         ###   ########.fr       */
+/*   Updated: 2025/04/02 19:09:27 by astefane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void	ft_check_obligatory(t_game *game)
 	if (game->coins < 1 || game->exit != 1
 		|| game->wall < 1 || game->player != 1)
 		ft_error("Wrong characters or map configuration", 0);
+	printf("coins: %d\n", game->coins);
 }
 
 

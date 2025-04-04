@@ -3,120 +3,151 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: astefane <astefane@student.42madrid>       +#+  +:+       +#+        */
+/*   By: astefane <astefane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 08:13:52 by astefane          #+#    #+#             */
-/*   Updated: 2025/04/01 20:09:14 by astefane         ###   ########.fr       */
+/*   Updated: 2025/04/02 18:43:53 by astefane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../so_long.h"
 
-void	check_dup_map(t_game *game)
+void	check_map(t_game *game)
 {
-	int		i;
-	char	**dup_big_line;
+	char	*dup_big_line;
+	int		start_pos;
 
-	i = 0;
-	dup_big_line = (char **)malloc(sizeof(char *) * (game->heigh + 1));
-	if (!dup_big_line)
-		ft_error("Error in dup_map\n", 1);
-	while (i < game->heigh)
+	game->copy_coins = game->coins;
+	dup_big_line = NULL;
+	dup_big_line = ft_strdup(game->big_line);
+	start_pos = ft_find_player(dup_big_line);
+	ft_flood_flip(game, start_pos, dup_big_line);
+	if (game->copy_coins != 0 || game->exit != 0)
 	{
-		dup_big_line[i] = ft_strndup(game->big_line + i * game->width,
-				game->width);
-		if (!dup_big_line[i])
-		{
-			while (--i >= 0)
-				free(dup_big_line[i]);
-			free(dup_big_line);
-			return ;
-		}
-		i++;
-	}
-	dup_big_line[i] = NULL;
-	allocate_map2d(game, dup_big_line);
-}
-
-void	allocate_map2d(t_game *game, char **dup_big_line)
-{
-	game->map2d = (char **)malloc(sizeof(char *) * game->heigh);
-	if (!game->map2d)
-		ft_error("Error allocating 2D map\n", 1);
-	copy_to_map2d(game, dup_big_line);
-	free_dup_big_line(dup_big_line);
-	ft_flood_flip(game, 0, 0, game->map2d);
-	print_map(game);
-	if (!check_matriz(game))
-	{
-		free_dup_big_line(game->map2d);
-		free(game);
+		free(dup_big_line);
 		ft_error("Error no path\n", 0);
 	}
-}
+	if (!check_end(game) || !check_player(game))
 
-void	ft_flood_flip(t_game *game, int y, int x, char **map)
-{
-	if (x < 0 || y < 0 || x >= game->width
-		|| y >= game->heigh
-		|| map[y][x] == '1' || map[y][x] == 'X' || map[y][x] == 'E')
-		return ;
-	map[y][x] = 'X';
-	ft_flood_flip(game, y + 1, x, map);
-	ft_flood_flip(game, y - 1, x, map);
-	ft_flood_flip(game, y, x + 1, map);
-	ft_flood_flip(game, y, x - 1, map);
-}
-
-int	check_matriz(t_game *game)
-{
-	int	y;
-	int	x;
-
-	y = 0;
-	while (y < game->heigh)
 	{
-		x = 0;
-		while (x < game->width)
-		{
-			if (game->map2d[y][x] == 'E')
-			{
-				if ((y > 0 && game->map2d[y - 1][x] == '0')
-					|| (y < game->heigh - 1 && game->map2d[y + 1][x] == '0')
-					|| (x > 0 && game->map2d[y][x - 1] == '0')
-					|| (x < game->width - 1 && game->map2d[y][x + 1] == '0'))
-					return (1);
-				return (0);
-			}
-			x++;
-		}
-		y++;
+		free(dup_big_line);
+		ft_error("Error no path\n", 0);
 	}
-	return (0);
+	free(dup_big_line);
 }
 
-
-void	copy_to_map2d(t_game *game, char **dup_big_line)
+void	ft_flood_flip(t_game *game, int x, char *map)
 {
-	int		i;
-	char	**ptr;
-	char	**line_ptr;
+	if (x < 0 || x >= game->width * game->heigh)
+		return ;
+	if (map[x] == '1' || map[x] == 'F')
+		return ;
+	if (map[x] == 'C')
+		game->copy_coins--;
+	if (map[x] == 'E')
+		game->exit--;
+	map[x] = 'F';
+	ft_flood_flip(game, x + 1, map);
+	ft_flood_flip(game, x - 1, map);
+	ft_flood_flip(game, x + game->width, map);
+	ft_flood_flip(game, x - game->width, map);
 
-	ptr = game->map2d;
-	line_ptr = dup_big_line;
+}
+
+int	check_dup_line(char *dup_big_line)
+{
+	int	i;
+	int	path;
+
 	i = 0;
-	while (i < game->heigh)
+	path = 0;
+	while (dup_big_line[i])
 	{
-		*ptr = ft_strdup(*line_ptr);
-		if (!*ptr)
-		{
-			while (--ptr >= game->map2d)
-				free(*ptr);
-			free(game->map2d);
-			return ;
-		}
-		ptr++;
-		line_ptr++;
+		if (dup_big_line[i] == 'F')
+			path = 1;
 		i++;
 	}
+	printf("Esto es dup_line %s\n", dup_big_line);
+	if (path == 0)
+		ft_error("Error no path\n", 0);
+	return (path);
+}
+
+int	check_player(t_game *game)
+{
+	int	i;
+	int	path;
+
+	i = 0;
+	path = 0;
+	while (game->big_line[i])
+	{
+		if (game->big_line[i] == 'P')
+		{
+			if (game->big_line[i + 1] == '0' || game->big_line[i - 1] == '0'
+				|| game->big_line[i + game->width] == '0'
+				|| game->big_line[i - game->width] == '0')
+				path = 1;
+			if (game->big_line[i + 1] == 'C' || game->big_line[i - 1] == 'C'
+				|| game->big_line[i + game->width] == 'C'
+				|| game->big_line[i - game->width] == 'C')
+				path = 1;
+		}
+		i++;
+	}
+		if (path == 0)
+			ft_error("Error no path\n", 0);
+	return (path);
+}
+
+int	check_end(t_game *game)
+{
+	int	i;
+	int	path;
+
+	i = 0;
+	path = 0;
+	while (game->big_line[i])
+	{
+		if (game->big_line[i] == 'E')
+		{
+			if (game->big_line[i + 1] == '0' || game->big_line[i - 1] == '0'
+				|| game->big_line[i + game->width] == '0'
+				|| game->big_line[i - game->width] == '0')
+				path = 1;
+			if (game->big_line[i + 1] == 'C' || game->big_line[i - 1] == 'C'
+				|| game->big_line[i + game->width] == 'C'
+				|| game->big_line[i - game->width] == 'C')
+				path = 1;
+		}
+		i++;
+	}
+		if (path == 0)
+			ft_error("Error no path\n", 0);
+	return (path);
+}
+
+int	ft_find_player(char *big_line)
+{
+	int	i;
+
+	i = 0;
+	while (big_line[i])
+	{
+		if (big_line[i] == 'P')
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+int	check_exit_reachable(char *map)
+{
+	int i = 0;
+	while (map[i])
+	{
+		if (map[i] == 'E')
+			return (0);
+		i++;
+	}
+	return (1);
 }

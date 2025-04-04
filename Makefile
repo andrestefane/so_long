@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: astefane <astefane@student.42madrid>       +#+  +:+       +#+         #
+#    By: astefane <astefane@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/22 15:47:58 by astefane          #+#    #+#              #
-#    Updated: 2025/04/01 20:07:35 by astefane         ###   ########.fr        #
+#    Updated: 2025/04/02 11:54:30 by astefane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -g -Wall -Wextra -Werror -Wno-error=unused-but-set-variable
+CFLAGS = -g -Wall -Wextra -Werror
 
 LIBFT = libft
 LIBFT_DIR = ft_libft/
@@ -28,6 +28,7 @@ SRCS = \
 	aux.c \
     read_map/reading_map.c \
 	load_map/load_map.c \
+	moves/moves.c \
 	parsing_matriz/parsing.c 
 
 OBJS = $(SRCS:.c=.o)
