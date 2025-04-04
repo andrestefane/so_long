@@ -106,13 +106,19 @@ void	Check_map_limits(char *line, t_game *game)
 
 void	reading_map(t_game *game, char *map)
 {
+	int		lencheck;
 	int		fd;
 	char	*line;
 	char	*temp;
 
+	lencheck = 0;
 	fd = open(map, O_RDONLY);
+	line = get_next_line(fd);
+	lencheck = ft_strlen(line);
+	if (lencheck <= 0)
+		ft_error("Map is emphy\n", 1);
 	if (fd == -1)
-		ft_error("Can't open map", 1);
+		ft_error("Can't open map\n", 1);
 	game->count_line = 2;
 	while (game->count_line != 1)
 	{

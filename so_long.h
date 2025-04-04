@@ -93,6 +93,7 @@ void	ft_up(t_game *game);
 void	ft_left(t_game *game);
 void	ft_down(t_game *game);
 void	ft_right(t_game *game);
+void	destroy_imagen(t_game *game);
 int		check_exit(t_game *game, char c);
 
 #endif

@@ -109,8 +109,17 @@ void	ft_up(t_game *game)
 		ft_putstr("moves: ");
 		ft_putnbr(game->moves);
 		ft_putchar('\n');
-
 	}
+}
+
+void	destroy_imagen(t_game *game)
+{
+	mlx_delete_image(game->mlx, game->img_background);
+	mlx_delete_image(game->mlx, game->img_coin);
+	mlx_delete_image(game->mlx, game->img_wall);
+	mlx_delete_image(game->mlx, game->img_exit);
+	mlx_delete_image(game->mlx, game->img_player);
+	mlx_close_window(game->mlx);
 }
 
 int	check_exit(t_game *game, char c)
@@ -119,9 +128,14 @@ int	check_exit(t_game *game, char c)
 	{
 		if (game->coins == 0)
 		{
-			ft_putstr("You win\n");
+			game->moves++;
+			ft_putstr("moves: ");
+			ft_putnbr(game->moves);
+			ft_putchar('\n');
+			ft_putstr("\033[1;32mYou win\n\033[0m");
+			destroy_imagen(game);
 			mlx_terminate(game->mlx);
-			free(game);
+			free_game(game);
 			exit(0);
 		}
 		else

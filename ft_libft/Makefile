@@ -60,28 +60,39 @@ get_next_line.c \
 get_next_line_utils.c \
 ft_strndup.c 
 
-OBJS			= $(SRCS:.c=.o)
+OBJS = $(SRCS:.c=.o)
 
-CC				= cc
-RM				= rm -f
-CFLAGS			= -Wall -Wextra -Werror
+CC = cc
+RM = rm -f
+CFLAGS = -Wall -Wextra -Werror
 
-NAME			= libft.a
+NAME = libft.a
 
-all:			$(NAME)
+TOTAL_FILES := $(words $(SRCS))
+COUNT = 0
 
-$(NAME):		$(OBJS)
-				ar rcs $(NAME) $(OBJS)
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	@ar rcs $(NAME) $(OBJS)
+	@echo "\033[1;33mLeaving Libft...\033[0m"
+
+%.o: %.c
+	$(eval COUNT=$(shell echo $$(( $(COUNT) + 1 ))))
+	$(eval PERCENT=$(shell echo $$(( $(COUNT) * 100 / $(TOTAL_FILES) ))))
+	@echo "\033[1;32m[ $(PERCENT)%] Building C object $@\033[0m"
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-				$(RM) $(OBJS)
+	@echo "\033[1;33mCleaning all .o files...\033[0m"
+	@$(RM) $(OBJS) > /dev/null 2>&1
 
-fclean:			clean
-				$(RM) $(NAME)
+fclean: clean
+	@$(RM) $(NAME) > /dev/null 2>&1
 
-re:				fclean $(NAME)
+re: fclean $(NAME)
 
-bonus:			$(OBJS)
-				ar rcs $(NAME) $(OBJS)
+bonus: $(OBJS)
+	@ar rcs $(NAME) $(OBJS)
 
-.PHONY:			all clean fclean re
+.PHONY: all clean fclean re bonus

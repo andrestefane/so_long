@@ -25,11 +25,11 @@ MLX42_REPO = https://github.com/codam-coding-college/MLX42.git
 
 SRCS = \
     so_long.c \
-	aux.c \
+    aux.c \
     read_map/reading_map.c \
-	load_map/load_map.c \
-	moves/moves.c \
-	parsing_matriz/parsing.c 
+    load_map/load_map.c \
+    moves/moves.c \
+    parsing_matriz/parsing.c 
 
 OBJS = $(SRCS:.c=.o)
 NAME = so_long
@@ -39,35 +39,50 @@ CFLAGS += $(INCLUDES)
 
 LDFLAGS = -L$(MINILIB_BUILD_DIR) -lmlx42 -lglfw -lXext -lX11 -lm -lbsd -no-pie
 
-all: $(MINILIB_LIB) $(LIBFT_LIB) $(NAME)
+TOTAL_FILES := $(words $(SRCS))
+COUNT = 0
 
-$(MINILIB_DIR):
-	git clone $(MLX42_REPO)
+all: check_mlx $(LIBFT_LIB) $(NAME)
 
-$(MINILIB_LIB): $(MINILIB_DIR)
-	mkdir -p $(MINILIB_BUILD_DIR)
-	cd $(MINILIB_BUILD_DIR) && cmake .. && make
+check_mlx:
+	@if [ ! -d "$(MINILIB_DIR)" ]; then \
+		echo "MLX42 no encontrado. Clonando y compilando..."; \
+		git clone $(MLX42_REPO) $(MINILIB_DIR); \
+		mkdir -p $(MINILIB_BUILD_DIR); \
+		cd $(MINILIB_BUILD_DIR) && cmake .. && make; \
+	else \
+		echo "MLX42 ya existe. Omitiendo clonación y compilación."; \
+	fi
 
 $(LIBFT_LIB):
-	make -C $(LIBFT_DIR)
+	@echo "\033[1;33mCompiling libft...\033[0m"
+	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
-$(NAME): $(OBJS) $(LIBFT_LIB) $(MINILIB_LIB)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBFT_LIB) $(MINILIB_LIB) $(LDFLAGS)
+$(NAME): $(OBJS) $(LIBFT_LIB)
+	@echo "	\033[38;5;51mReady to play the game\033[0m"
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBFT_LIB) $(LDFLAGS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@if [ "$(COUNT)" -eq "0" ]; then echo "\033[1;33mCompiling So_long...\033[0m"; fi
+	$(eval COUNT=$(shell echo $$(( $(COUNT) + 1 ))))
+	$(eval PERCENT=$(shell echo $$(( $(COUNT) * 100 / $(TOTAL_FILES) ))))
+	@echo "\033[1;32m[ $(PERCENT)%] Building C object $@\033[0m"
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJS)
-	make clean -C $(LIBFT_DIR)
-	@if [ -d "$(MINILIB_BUILD_DIR)" ]; then make clean -C $(MINILIB_BUILD_DIR); fi
+	@echo "\033[1;33mCleaning all .o files...\033[0m"
+	@rm -rf $(OBJS) > /dev/null 2>&1
+	@make clean -C $(LIBFT_DIR) > /dev/null 2>&1
+	@if [ -d "$(MINILIB_BUILD_DIR)" ]; then \
+		make clean -C $(MINILIB_BUILD_DIR) > /dev/null 2>&1; \
+	fi
 
 fclean: clean
-	rm -rf $(NAME)
-	make fclean -C $(LIBFT_DIR)
-	@if [ -d "$(MINILIB_DIR)" ]; then rm -rf $(MINILIB_DIR); fi
-	rm -rf $(MINILIB_BUILD_DIR)
+	@rm -rf $(NAME) > /dev/null 2>&1
+	@make fclean -C $(LIBFT_DIR) > /dev/null 2>&1
+	@if [ -d "$(MINILIB_DIR)" ]; then rm -rf $(MINILIB_DIR) > /dev/null 2>&1; fi
+	@rm -rf $(MINILIB_BUILD_DIR) > /dev/null 2>&1
 
 re: fclean all
 
-.PHONY: all clean fclean re $(MINILIB_DIR)
+.PHONY: all clean fclean re check_mlx
