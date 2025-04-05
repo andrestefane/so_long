@@ -48,10 +48,10 @@ int	main(int argc, char **argv)
 
 	game = malloc(sizeof(t_game));
 	if (!game)
-		ft_error("Memorry allocted failed", 1);
+		ft_error_and_free(game, "Error with malloc\n", 1);
 	*game = (t_game){0};
 	if (argc != 2)
-		ft_error("Error with arguments\n", 0);
+		ft_error_and_free(game, "Error with malloc\n", 1);
 	parsing(game, argv[1]);
 	return (0);
 }

@@ -57,7 +57,7 @@ typedef struct game
 
 // Funciones de parseo para comprobar el mapa
 
-void	check_map_name(char *map);
+void	check_map_name(t_game *game, char *map);
 void	ft_check_side(t_game *game);
 void	ft_check_top_bot(t_game *game);
 void	ft_check_obligatory(t_game *game);

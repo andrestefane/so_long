@@ -25,13 +25,13 @@ void	check_map(t_game *game)
 	if (game->copy_coins != 0 || game->exit != 0)
 	{
 		free(dup_big_line);
-		ft_error("Error no path\n", 0);
+		ft_error_and_free(game, "Error no path\n", 0);
 	}
 	if (!check_end(game) || !check_player(game))
 
 	{
 		free(dup_big_line);
-		ft_error("Error no path\n", 0);
+		ft_error_and_free(game, "Error no path\n", 0);
 	}
 	free(dup_big_line);
 }
@@ -67,7 +67,6 @@ int	check_dup_line(char *dup_big_line)
 			path = 1;
 		i++;
 	}
-	printf("Esto es dup_line %s\n", dup_big_line);
 	if (path == 0)
 		ft_error("Error no path\n", 0);
 	return (path);
@@ -96,7 +95,7 @@ int	check_player(t_game *game)
 		i++;
 	}
 		if (path == 0)
-			ft_error("Error no path\n", 0);
+			ft_error_and_free(game, "Error no path\n", 0);
 	return (path);
 }
 
@@ -123,7 +122,7 @@ int	check_end(t_game *game)
 		i++;
 	}
 		if (path == 0)
-			ft_error("Error no path\n", 0);
+			ft_error_and_free(game, "Error no path\n", 0);
 	return (path);
 }
 

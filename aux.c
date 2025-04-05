@@ -21,7 +21,7 @@ void	free_game(t_game *game)
 
 void	parsing(t_game *game, char *map)
 {
-	check_map_name(map);
+	check_map_name(game, map);
 	reading_map(game, map);
 	check_map(game);
 	game->mlx = mlx_init(game->width * 64, game->heigh * 64, "so_long", false);

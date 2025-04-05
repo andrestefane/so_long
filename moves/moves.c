@@ -135,7 +135,6 @@ int	check_exit(t_game *game, char c)
 			ft_putstr("\033[1;32mYou win\n\033[0m");
 			destroy_imagen(game);
 			mlx_terminate(game->mlx);
-			free_game(game);
 			exit(0);
 		}
 		else
