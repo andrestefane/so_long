@@ -12,6 +12,14 @@
 
 #include "so_long.h"
 
+void	ft_error_and_free(t_game *game, char *str_error, int exit)
+{
+	if (game->big_line)
+		free(game->big_line);
+	free(game);
+	ft_error(str_error, exit);
+}
+
 void	key_press(mlx_key_data_t keydata, void *param)
 {
 	t_game	*game;

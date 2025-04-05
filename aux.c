@@ -12,19 +12,6 @@
 
 #include "so_long.h"
 
-void	free_big_line(char **big_line)
-{
-	char	**ptr;
-
-	ptr = big_line;
-	while (*ptr)
-	{
-		free(*ptr);
-		ptr++;
-	}
-	free(big_line);
-}
-
 void	free_game(t_game *game)
 {
 	if (game->big_line)

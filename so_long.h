@@ -82,9 +82,9 @@ int		check_dup_line(char *dup_big_line);
 
 //Aux
 
-void	free_big_line(char **big_line);
 void	free_game(t_game *game);
 void	parsing(t_game *game, char *map);
+void	ft_error_and_free(t_game *game, char *str_error, int exit);
 
 //moves
 
