@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   moves.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: astefane <astefane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: astefane <astefane@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:52:33 by astefane          #+#    #+#             */
-/*   Updated: 2025/04/02 18:50:53 by astefane         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:26:34 by astefane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	ft_left(t_game *game)
 		ft_putstr("moves: ");
 		ft_putnbr(game->moves);
 		ft_putchar('\n');
-
 	}
 }
 
@@ -60,7 +59,6 @@ void	ft_right(t_game *game)
 		ft_putstr("moves: ");
 		ft_putnbr(game->moves);
 		ft_putchar('\n');
-
 	}
 }
 
@@ -120,25 +118,4 @@ void	destroy_imagen(t_game *game)
 	mlx_delete_image(game->mlx, game->img_exit);
 	mlx_delete_image(game->mlx, game->img_player);
 	mlx_close_window(game->mlx);
-}
-
-int	check_exit(t_game *game, char c)
-{
-	if (c == 'E')
-	{
-		if (game->coins == 0)
-		{
-			game->moves++;
-			ft_putstr("moves: ");
-			ft_putnbr(game->moves);
-			ft_putchar('\n');
-			ft_putstr("\033[1;32mYou win\n\033[0m");
-			destroy_imagen(game);
-			mlx_terminate(game->mlx);
-			exit(0);
-		}
-		else
-			return (1);
-	}
-	return (0);
 }

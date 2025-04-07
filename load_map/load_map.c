@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: astefane <astefane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: astefane <astefane@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 05:46:53 by astefane          #+#    #+#             */
-/*   Updated: 2025/04/02 12:20:36 by astefane         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:01:40 by astefane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,29 @@ void	place(t_game *game)
 		put_image(game, i);
 		i++;
 	}
+}
+
+void	check_img(t_game *game)
+{
+	game->path_player = "/home/astefane/proyectos/so_long/img/player.png";
+	game->path_wall = "/home/astefane/proyectos/so_long/img/tree.png";
+	game->path_coin = "/home/astefane/proyectos/so_long/img/diamante1.png";
+	game->path_exit = "/home/astefane/proyectos/so_long/img/cofre.png";
+	game->path_back_ground = "/home/astefane/proyectos/so_long/img/grass.png";
+
+	game->fd_player = open(game->path_player, O_RDONLY);
+	if (game->fd_player < 0)
+		ft_error_and_free(game, " Error\n Loading magenes\n", 1);
+	game->fd_wall = open(game->path_wall, O_RDONLY);
+	if (game->fd_wall < 0)
+		ft_error_and_free(game, " Error\n Loading magenes\n", 1);
+	game->fd_coin = open(game->path_coin, O_RDONLY);
+	if (game->fd_coin < 0)
+		ft_error_and_free(game, " Error\n Loading magenes\n", 1);
+	game->fd_exit = open(game->path_exit, O_RDONLY);
+	if (game->fd_exit < 0)
+		ft_error_and_free(game, " Error\n Loading magenes\n", 1);
+	game->fd_back_ground = open(game->path_back_ground, O_RDONLY);
+	if (game->fd_back_ground < 0)
+		ft_error_and_free(game, " Error\n Loading magenes\n", 1);
 }

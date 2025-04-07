@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: astefane <astefane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: astefane <astefane@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 18:57:44 by astefane          #+#    #+#             */
-/*   Updated: 2025/04/02 18:56:40 by astefane         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:39:20 by astefane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,12 @@ int	main(int argc, char **argv)
 
 	game = malloc(sizeof(t_game));
 	if (!game)
-		ft_error_and_free(game, "Error with malloc\n", 1);
+		ft_error_and_free(game, "Error\n with malloc\n", 1);
 	*game = (t_game){0};
 	if (argc != 2)
-		ft_error_and_free(game, "Error with malloc\n", 1);
+		ft_error_and_free(game, "Error\n with malloc\n", 1);
 	parsing(game, argv[1]);
+	free(game);
+	free(argv[1]);
 	return (0);
 }

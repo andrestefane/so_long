@@ -3,34 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   reading_map.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: astefane <astefane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: astefane <astefane@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 17:23:22 by astefane          #+#    #+#             */
-/*   Updated: 2025/04/02 19:09:27 by astefane         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:41:45 by astefane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../so_long.h"
-
-void	check_map_name(t_game *game, char *map)
-{
-	int		fd;
-	char	buffer[2];
-	int		bytes_read;
-
-	if (ft_strlen(map) <= 4 || ft_strncmp(map + ft_strlen(map) - 4, ".ber", 4) != 0)
-		ft_error_and_free(game, "Error .ber not found\n", 1);
-	fd = open(map, O_RDONLY);
-	if (fd == -1)
-		ft_error_and_free(game, "Error Can't open map\n", 1);
-	bytes_read = read(fd, buffer, 1);
-	if (bytes_read <= 0)
-	{
-		close(fd);
-		ft_error_and_free(game, "Error Map is empty\n", 1);
-	}
-	close(fd);
-}
 
 void	ft_check_side(t_game *game)
 {
@@ -40,14 +20,14 @@ void	ft_check_side(t_game *game)
 	while (i < ft_strlen(game->big_line))
 	{
 		if (game->big_line[i] != '1')
-			ft_error_and_free(game, "Error right side\n", 0);
+			ft_error_and_free(game, "Error\n right side\n", 0);
 		i += game->width;
 	}
 	i = 0;
 	while (i < ft_strlen(game->big_line))
 	{
 		if (game->big_line[i] != '1')
-			ft_error_and_free(game, "Error left side\n", 0);
+			ft_error_and_free(game, "Error\n left side\n", 0);
 		i += game->width;
 	}
 }
@@ -64,14 +44,14 @@ void	ft_check_top_bot(t_game *game)
 		if (game->big_line[i] == '1' || game->big_line[i] == '\n')
 			i++;
 		else
-			ft_error_and_free(game, "Error in top\n", 0);
+			ft_error_and_free(game, "Error\ntop\n", 0);
 	}
 	while (last != ft_strlen(game->big_line))
 	{
 		if (game->big_line[last] == '1' || game->big_line[last] == '\n')
 			last++;
 		else
-			ft_error_and_free(game, "Error in bottom\n", 0);
+			ft_error_and_free(game, "Error\nbottom\n", 0);
 	}
 	ft_check_side(game);
 }
@@ -86,7 +66,7 @@ void	ft_check_obligatory(t_game *game)
 		if (game->big_line[i] != 'C' && game->big_line[i] != 'E'
 			&& game->big_line[i] != '1' && game->big_line[i] != '0'
 			&& game->big_line[i] != 'P' && game->big_line[i] != '\n')
-			ft_error_and_free(game, "Error Wrong characters\n", 0);
+			ft_error_and_free(game, "Error\nWrong characters\n", 0);
 		if (game->big_line[i] == 'C')
 			game->coins++;
 		if (game->big_line[i] == 'E')
@@ -97,33 +77,37 @@ void	ft_check_obligatory(t_game *game)
 			game->background++;
 		if (game->big_line[i] == 'P')
 			game->player++;
-
 		i++;
 	}
 	if (game->coins < 1 || game->exit != 1
 		|| game->wall < 1 || game->player != 1)
-		ft_error_and_free(game, "Error Wrong characters or map configuration\n", 0);
-}
-
-
-void	Check_map_limits(char *line, t_game *game)
-{
-	if (line[ft_strlen(line) - 1] == '\n')
-		game->count_line = 0;
-	else
-		game->count_line = 1;
+		ft_error_and_free(game, "Error\nWrong characters\n", 0);
 }
 
 void	reading_map(t_game *game, char *map)
 {
-	int 	fd;
-	char	*line;
+	int		fd;
 	char	*temp_big_line;
 
 	temp_big_line = ft_strdup("");
 	fd = open(map, O_RDONLY);
 	if (fd == -1)
-		ft_error_and_free(game, "Error Can't open map\n", 1);
+		ft_error_and_free(game, "Error\nCan't open map\n", 1);
+	process_map_lines(game, fd, &temp_big_line);
+	if (!temp_big_line)
+		ft_error_and_free(game, "Error\nMap is empty\n", 1);
+	game->big_line = ft_strdup(temp_big_line);
+	free(temp_big_line);
+	close(fd);
+	ft_check_top_bot(game);
+	ft_check_obligatory(game);
+}
+
+void	process_map_lines(t_game *game, int fd, char **temp_big_line)
+{
+	char	*line;
+	int		line_len;
+
 	while (1)
 	{
 		line = get_next_line(fd);
@@ -132,13 +116,12 @@ void	reading_map(t_game *game, char *map)
 		game->heigh++;
 		if (line[ft_strlen(line) - 1] == '\n')
 			line[ft_strlen(line) - 1] = '\0';
-		game->width = ft_strlen(line);
-		temp_big_line = ft_strjoin(temp_big_line, line);
+		line_len = ft_strlen(line);
+		if (game->width == 0)
+			game->width = line_len;
+		else if (line_len != game->width)
+			ft_error_and_free(game, "Error\nMap is not rectangular\n", 1);
+		*temp_big_line = ft_strjoin(*temp_big_line, line);
 		free(line);
 	}
-	game->big_line = ft_strdup(temp_big_line);
-	free(temp_big_line);
-	close(fd);
-	ft_check_top_bot(game);
-	ft_check_obligatory(game);
 }
