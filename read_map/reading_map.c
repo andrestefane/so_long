@@ -14,25 +14,22 @@
 
 void	check_map_name(t_game *game, char *map)
 {
-	int		i;
 	int		fd;
-	int		len_map;
-	char	*line;
+	char	buffer[2];
+	int		bytes_read;
 
-	i = ft_strlen(map);
-	if (i <= 4 || ft_strncmp(map + i - 4, ".ber", 4) != 0)
+	if (ft_strlen(map) <= 4 || ft_strncmp(map + ft_strlen(map) - 4, ".ber", 4) != 0)
 		ft_error_and_free(game, "Error .ber not found\n", 1);
 	fd = open(map, O_RDONLY);
-	line = get_next_line(fd);
-	len_map = ft_strlen(line);
-	free(line);
-	if (len_map <= 0)
-		ft_error_and_free(game, "Error Map is empty\n", 1);
 	if (fd == -1)
-	{	
-		close(fd);
 		ft_error_and_free(game, "Error Can't open map\n", 1);
+	bytes_read = read(fd, buffer, 1);
+	if (bytes_read <= 0)
+	{
+		close(fd);
+		ft_error_and_free(game, "Error Map is empty\n", 1);
 	}
+	close(fd);
 }
 
 void	ft_check_side(t_game *game)
@@ -74,7 +71,7 @@ void	ft_check_top_bot(t_game *game)
 		if (game->big_line[last] == '1' || game->big_line[last] == '\n')
 			last++;
 		else
-			ft_error_and_free(game, "Error in bot\n", 0);
+			ft_error_and_free(game, "Error in bottom\n", 0);
 	}
 	ft_check_side(game);
 }
@@ -133,59 +130,15 @@ void	reading_map(t_game *game, char *map)
 		if (!line)
 			break ;
 		game->heigh++;
-		game->width = ft_strlen(line);
 		if (line[ft_strlen(line) - 1] == '\n')
 			line[ft_strlen(line) - 1] = '\0';
+		game->width = ft_strlen(line);
 		temp_big_line = ft_strjoin(temp_big_line, line);
 		free(line);
 	}
-	if (temp_big_line == NULL)
-		ft_error_and_free(game, "Error Memory allocation failed\n", 1);
 	game->big_line = ft_strdup(temp_big_line);
 	free(temp_big_line);
 	close(fd);
 	ft_check_top_bot(game);
 	ft_check_obligatory(game);
 }
-
-/* void	reading_map(t_game *game, char *map)
-{
-	int		lencheck;
-	int		fd;
-	char	*line;
-	char	*temp;
-
-	lencheck = 0;
-	fd = open(map, O_RDONLY);
-	line = get_next_line(fd);
-	lencheck = ft_strlen(line);
-	if (lencheck <= 0)
-		ft_error("Map is emphy\n", 1);
-	if (fd == -1)
-		ft_error("Can't open map\n", 1);
-	game->count_line = 2;
-	while (game->count_line != 1)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			break ;
-		game->heigh++;
-		if (game->count_line == 2)
-		{
-			game->width = ft_strlen(line);
-			if (line[game->width - 1] == '\n')
-				game->width--;
-		}
-		Check_map_limits(line, game);
-		if (ft_strlen(line) - (line[ft_strlen(line) - 1] == '\n') != game->width)
-			ft_error("Error in size of line\n", 1);
-		temp = ft_substr(line, 0, game->width);
-		game->big_line = ft_strjoin(game->big_line, temp);
-		free(temp);
-		free(line);
-	}
-	printf("%s\n", game->big_line);
-	close(fd);
-	ft_check_top_bot(game);
-	ft_check_obligatory(game);
-} */

@@ -31,7 +31,5 @@ char	*ft_strjoin(char *s1, const char *s2)
 	if (s1)
 		ft_memcpy(result, s1, lens1);
 	ft_memcpy(result + lens1, s2, lens2 + 1);
-	if (s1)
-		free(s1);
 	return (result);
 }
