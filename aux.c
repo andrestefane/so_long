@@ -6,7 +6,7 @@
 /*   By: astefane <astefane@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 08:17:55 by astefane          #+#    #+#             */
-/*   Updated: 2025/04/07 20:16:58 by astefane         ###   ########.fr       */
+/*   Updated: 2025/04/08 14:23:15 by astefane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,7 @@ void	check_len(t_game *game)
 {
 	game->size_heigh = 3840;
 	game->size_width = 2160;
-
 	if (game->heigh * 64 > game->size_width
 		|| game->width * 64 > game->size_heigh)
 		ft_error_and_free(game, " Error\n Map too Big\n", 1);
-
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: astefane <astefane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: astefane <astefane@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:05:07 by astefane          #+#    #+#             */
-/*   Updated: 2025/03/28 07:03:00 by astefane         ###   ########.fr       */
+/*   Updated: 2025/04/08 15:48:11 by astefane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*ft_free(char **str);
 char	*ft_cleanline(char *str);
 char	*ft_get_line(char *str);
 char	*ft_reading(int fd, char *str);
-char	*get_next_line(int fd);
+char	*get_next_line(int fd, int node);
 
 // GNL UTILS
 

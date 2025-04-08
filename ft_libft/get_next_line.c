@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: astefane <astefane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: astefane <astefane@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 11:25:54 by astefane          #+#    #+#             */
-/*   Updated: 2025/03/22 16:24:01 by astefane         ###   ########.fr       */
+/*   Updated: 2025/04/08 15:48:02 by astefane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,16 @@ char	*ft_reading(int fd, char *str)
 	return (str);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line(int fd, int mode)
 {
 	static char	*str;
 	char		*line;
 
+	if (mode == 1)
+	{
+		ft_free(&str);
+		return (NULL);
+	}
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if ((str && !ft_strchr_gnl(str, '\n')) || !str)

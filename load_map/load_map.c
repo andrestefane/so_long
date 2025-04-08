@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: astefane <astefane@student.42madrid>       +#+  +:+       +#+        */
+/*   By: astefane <astefane@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 05:46:53 by astefane          #+#    #+#             */
-/*   Updated: 2025/04/08 01:20:08 by astefane         ###   ########.fr       */
+/*   Updated: 2025/04/08 14:22:51 by astefane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void	check_img(t_game *game)
 	game->path_coin = "./img/diamante1.png";
 	game->path_exit = "./img/cofre.png";
 	game->path_back_ground = "./img/grass.png";
-
 	game->fd_player = open(game->path_player, O_RDONLY);
 	if (game->fd_player < 0)
 		ft_error_and_free(game, " Error\n Loading imagenes\n", 1);

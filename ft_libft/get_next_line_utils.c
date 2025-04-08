@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: astefane <astefane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: astefane <astefane@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:13:23 by astefane          #+#    #+#             */
-/*   Updated: 2025/03/28 05:21:07 by astefane         ###   ########.fr       */
+/*   Updated: 2025/04/08 15:47:54 by astefane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
